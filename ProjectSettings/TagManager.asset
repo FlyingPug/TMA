@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Pickup
   - Ground
   - Metal
+  - Pickup
+  - Selectable
   layers:
   - Default
   - TransparentFX
