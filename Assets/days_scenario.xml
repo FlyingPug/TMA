@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Subtitles>
+    <Day id="1" text="Day 1. Begining" weatherType="Clear"/>
+    <Day id="2" text="Day 2. Awakening" weatherType="Blizzard"/>
+    <Day id="3" text="Day 3. Denial" weatherType="Snowy"/>
+    <Day id="4" text="Day 4. Anger" weatherType="Snowy"/>
+    <Day id="5" text="Day 5. Bargaining" weatherType="Clear"/>
+    <Day id="6" text="Day 6. Depression" weatherType="Blizzard"/>
+    <Day id="7" text="Day 7. Acceptance" weatherType="Clear"/>
+</Subtitles>
