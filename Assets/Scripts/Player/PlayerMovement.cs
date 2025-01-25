@@ -9,7 +9,10 @@ public class PlayerMovement : MonoBehaviour
     public float walkBobSpeed = 10f;
     public float walkBobAmount = 0.05f;
 
-    public AudioClip[] footstepSounds;
+    public float playerHeight = 1.7f;
+
+    public AudioClip[] snowFootstepSounds;
+    public AudioClip[] metalFootstepSounds;
     public float stepInterval = 0.5f;
 
     private Rigidbody rb;
@@ -18,6 +21,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 initialCameraPosition;
     private AudioSource audioSource;
     private float stepTimer = 0f;
+
+    private bool isGrounded;
+    private string groundTag;
 
     void Start()
     {
@@ -29,10 +35,23 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void Update()
-    {
+    {   
+        CheckGroundStatus();
+
         HandleMovement();
         HandleMouseLook();
         HandleCameraBob();
+    }
+
+    private void CheckGroundStatus()
+    {
+        RaycastHit hit;
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, out hit, playerHeight);
+
+        if (isGrounded)
+        {   
+            groundTag = hit.collider.CompareTag("Metal") ? "Metal" : "Ground";
+        }
     }
 
     private void HandleMovement()
@@ -90,10 +109,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void PlayFootstepSound()
     {
-        if (footstepSounds.Length > 0)
+        if (isGrounded)
         {
-            AudioClip clip = footstepSounds[Random.Range(0, footstepSounds.Length)];
-            audioSource.PlayOneShot(clip);
+            AudioClip clip = null;
+
+            if (groundTag == "Metal" && metalFootstepSounds.Length > 0)
+            {
+                clip = metalFootstepSounds[Random.Range(0, metalFootstepSounds.Length)];
+            }
+            else if (groundTag == "Ground" && snowFootstepSounds.Length > 0)
+            {
+                clip = snowFootstepSounds[Random.Range(0, snowFootstepSounds.Length)];
+            }
+
+            if (clip != null)
+            {
+                audioSource.PlayOneShot(clip);
+            }
         }
     }
 }

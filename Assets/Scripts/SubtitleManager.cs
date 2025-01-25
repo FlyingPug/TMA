@@ -103,6 +103,11 @@ public class SubtitleManager : MonoBehaviour
         }
     }
 
+    public void ShowSubtitleText(string subtitleText)
+    {
+        
+    }
+
     private System.Collections.IEnumerator FadeIn()
     {
         isFading = true;

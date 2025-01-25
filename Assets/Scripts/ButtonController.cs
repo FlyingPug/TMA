@@ -1,10 +1,8 @@
 using UnityEngine;
 
-using UnityEngine;
-
 public class ButtonController : MonoBehaviour, IUsable
 {
-    [Header("Настройки кнопки")]
+    [Header("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ")]
     public GameObject[] usableObjects;
     private Animation anim; 
 
