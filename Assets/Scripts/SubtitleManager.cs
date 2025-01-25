@@ -10,14 +10,17 @@ public class SubtitleManager : MonoBehaviour
     private Dictionary<int, string> subtitles = new Dictionary<int, string>();
 
     public TMP_Text subtitleText;
-    public float displayTime = 2f;
+    public CanvasGroup panelCanvasGroup;
+    public float defaultDisplayTime = 2f;
+    public float fadeDuration = 0.5f;
 
     private float timer = 0f;
+    private bool isFading = false;
 
     void Start()
     {
         LoadLanguage("en");
-        ShowSubtitle(1);
+        ShowSubtitle(1, true, true);
     }
 
     private void Update()
@@ -25,9 +28,9 @@ public class SubtitleManager : MonoBehaviour
         if (timer > 0)
         {
             timer -= Time.deltaTime;
-            if (timer <= 0)
+            if (timer <= 0 && !isFading)
             {
-                subtitleText.text = "";
+                StartCoroutine(FadeOut());
             }
         }
     }
@@ -78,10 +81,59 @@ public class SubtitleManager : MonoBehaviour
         return subtitles.ContainsKey(id) ? subtitles[id] : $"[Failed to find subtitle #{id}]";
     }
 
-    public void ShowSubtitle(int id)
+    public void ShowSubtitle(int id, bool fadeIn = true, bool fadeOut = true, float? customDisplayTime = null)
     {
         string subtitle = GetSubtitle(id);
         subtitleText.text = subtitle;
-        timer = displayTime;
+
+        if (fadeIn)
+        {
+            StartCoroutine(FadeIn());
+        }
+        else
+        {
+            panelCanvasGroup.alpha = 1;
+        }
+
+        timer = customDisplayTime ?? defaultDisplayTime;
+
+        if (!fadeOut)
+        {
+            StopCoroutine(FadeOut());
+        }
+    }
+
+    private System.Collections.IEnumerator FadeIn()
+    {
+        isFading = true;
+        panelCanvasGroup.alpha = 0;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            panelCanvasGroup.alpha = Mathf.Clamp01(elapsed / fadeDuration);
+            yield return null;
+        }
+
+        panelCanvasGroup.alpha = 1;
+        isFading = false;
+    }
+
+    private System.Collections.IEnumerator FadeOut()
+    {
+        isFading = true;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            panelCanvasGroup.alpha = Mathf.Clamp01(1 - (elapsed / fadeDuration));
+            yield return null;
+        }
+
+        panelCanvasGroup.alpha = 0;
+        subtitleText.text = "";
+        isFading = false;
     }
 }
