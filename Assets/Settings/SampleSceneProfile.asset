@@ -15,16 +15,16 @@ MonoBehaviour:
   active: 1
   skipIterations:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.9
   intensity:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0
   scatter:
     m_OverrideState: 1
-    m_Value: 0.361
+    m_Value: 0.7
   clamp:
     m_OverrideState: 1
     m_Value: 65472
@@ -33,7 +33,7 @@ MonoBehaviour:
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   highQualityFiltering:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   downscale:
     m_OverrideState: 1
     m_Value: 0
@@ -134,16 +134,16 @@ MonoBehaviour:
   active: 1
   redOutRedIn:
     m_OverrideState: 1
-    m_Value: 25
+    m_Value: 100
   redOutGreenIn:
     m_OverrideState: 1
-    m_Value: 27
+    m_Value: 0
   redOutBlueIn:
     m_OverrideState: 1
     m_Value: 0
   greenOutRedIn:
     m_OverrideState: 1
-    m_Value: 51
+    m_Value: 0
   greenOutGreenIn:
     m_OverrideState: 1
     m_Value: 100
@@ -152,13 +152,13 @@ MonoBehaviour:
     m_Value: 0
   blueOutRedIn:
     m_OverrideState: 1
-    m_Value: 9
+    m_Value: 0
   blueOutGreenIn:
     m_OverrideState: 1
     m_Value: 0
   blueOutBlueIn:
     m_OverrideState: 1
-    m_Value: 60
+    m_Value: 100
 --- !u!114 &-4819424647734877497
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -185,7 +185,7 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 1
+          inSlope: 0
           outSlope: 1
           tangentMode: 0
           weightedMode: 0
@@ -195,7 +195,7 @@ MonoBehaviour:
           time: 1
           value: 1
           inSlope: 1
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -391,7 +391,7 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: -32
+    m_Value: 0
   tint:
     m_OverrideState: 1
     m_Value: 0
@@ -416,10 +416,10 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.311
+    m_Value: 0
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.452
+    m_Value: 0.2
   rounded:
     m_OverrideState: 1
     m_Value: 0
@@ -470,7 +470,7 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   neutralHDRRangeReductionMode:
     m_OverrideState: 1
     m_Value: 2
@@ -485,7 +485,7 @@ MonoBehaviour:
     m_Value: 0
   paperWhite:
     m_OverrideState: 1
-    m_Value: 234
+    m_Value: 300
   detectBrightnessLimits:
     m_OverrideState: 1
     m_Value: 1
@@ -494,7 +494,7 @@ MonoBehaviour:
     m_Value: 0.005
   maxNits:
     m_OverrideState: 1
-    m_Value: 647
+    m_Value: 1000
 --- !u!114 &911907651260596943
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -525,7 +525,7 @@ MonoBehaviour:
     m_Value: 1
   leakReductionMode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   minValidDotProductValue:
     m_OverrideState: 1
     m_Value: 0.1
@@ -556,7 +556,7 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   gaussianStart:
     m_OverrideState: 1
     m_Value: 10
@@ -622,7 +622,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0
 --- !u!114 &4228592868308960938
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -638,7 +638,7 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.97071505, z: 0.9926786, w: 0}
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
   midtones:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
@@ -703,7 +703,7 @@ MonoBehaviour:
     m_Value: 0
   clamp:
     m_OverrideState: 1
-    m_Value: 0.061
+    m_Value: 0.05
 --- !u!114 &7482811880261076959
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -719,7 +719,7 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.44488996}
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
   gamma:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
