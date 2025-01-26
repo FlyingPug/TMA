@@ -37,11 +37,14 @@ public class QuestManager : MonoBehaviour
     public SubtitleManager subtitleManager;
     public TypewriterEffect currentQuestOutput;
 
+    // Событие, вызываемое при добавлении нового квеста
+    public event Action<int> OnQuestAdded;
+
     void Start()
     {
         subtitleManager = GetComponent<SubtitleManager>();
         LoadQuests();
-        StartCoroutine(AddQuestWithDelay(1));
+        StartCoroutine(AddQuestWithDelay(0));
     }
 
     private void LoadQuests()
@@ -67,7 +70,7 @@ public class QuestManager : MonoBehaviour
                     allQuests.Add(id, new Quest(id, name, description, subtitleText));
                 }
 
-                Debug.Log("Subtitles loaded successfully.");
+                Debug.Log("Quests loaded successfully.");
             }
             catch (XmlException e)
             {
@@ -82,11 +85,12 @@ public class QuestManager : MonoBehaviour
 
     public void AddQuest(int id)
     {
-        Debug.Log($"trying to add quest {id}");
+        Debug.Log($"Trying to add quest {id}");
         Quest completedQuest = currentQuests.Find(quest => quest.id == id);
 
         if (completedQuest != null && completedQuest.isCompleted)
             return;
+
         Debug.Log($"Added quest {id}");
         StartCoroutine(AddQuestWithDelay(id));
     }
@@ -99,10 +103,15 @@ public class QuestManager : MonoBehaviour
             {
                 subtitleManager.EnqueueSubtitleText(quest.subtitleText);
             }
+
             yield return new WaitUntil(() => subtitleManager.QueueLength == 0);
+
             // Добавляем квест в список
             currentQuests.Add(quest);
             UpdateUi();
+
+            // Вызываем событие после добавления квеста
+            OnQuestAdded?.Invoke(id);
         }
         else
         {
