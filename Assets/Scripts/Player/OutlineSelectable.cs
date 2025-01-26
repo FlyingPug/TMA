@@ -9,37 +9,58 @@ public class OutlineSelection : MonoBehaviour
     public float rayDistance = 10f;
     public Color outlineColor = Color.yellow;
     public float outlineWidth = 9.0f;
+    public int interactLayer = 7;
 
     void Update()
     {
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        RaycastHit[] hits = Physics.RaycastAll(ray, rayDistance);
 
-        if (Physics.Raycast(ray, out raycastHit, rayDistance))
+        Transform closestHighlight = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (var hit in hits)
         {
-            currentHighlight = raycastHit.transform;
-
-            if (currentHighlight.CompareTag("Selectable"))
+            if (hit.transform.gameObject.layer == interactLayer)
             {
-                if (currentHighlight != previousHighlight)
+                float distance = Vector3.Distance(ray.origin, hit.point);
+                if (distance < closestDistance)
                 {
-                    EnableOutline(currentHighlight);
-
-                    if (previousHighlight != null)
-                    {
-                        DisableOutline(previousHighlight);
-                    }
-
-                    previousHighlight = currentHighlight;
+                    closestDistance = distance;
+                    closestHighlight = hit.transform;
                 }
             }
-            else
+        }
+
+        if (closestHighlight != null)
+        {
+            if (closestHighlight != previousHighlight)
             {
-                ClearHighlight();
+                HandleHighlight(closestHighlight);
+
+                if (previousHighlight != null)
+                {
+                    DisableOutline(previousHighlight);
+                }
+
+                previousHighlight = closestHighlight;
             }
         }
         else
         {
             ClearHighlight();
+        }
+    }
+
+    private void HandleHighlight(Transform target)
+    {
+        EnableOutline(target);
+
+        // Проверяем, является ли объект дверью и двустворчатой
+        DoorController door = target.GetComponent<DoorController>();
+        if (door != null && door.isDoubleDoor && door.secondDoor != null)
+        {
+            EnableOutline(door.secondDoor.transform);
         }
     }
 
@@ -69,6 +90,14 @@ public class OutlineSelection : MonoBehaviour
         if (previousHighlight != null)
         {
             DisableOutline(previousHighlight);
+
+            // Убираем контур второй створки, если есть
+            DoorController door = previousHighlight.GetComponent<DoorController>();
+            if (door != null && door.isDoubleDoor && door.secondDoor != null)
+            {
+                DisableOutline(door.secondDoor.transform);
+            }
+
             previousHighlight = null;
         }
     }

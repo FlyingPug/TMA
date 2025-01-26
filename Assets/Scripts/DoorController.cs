@@ -9,13 +9,19 @@ public class DoorController : MonoBehaviour, IUsable
     public bool smoothEnd = true;
     public AudioClip openSound;
     public AudioClip closeSound;
+    public float openVolume = 1f;
+    public float closeVolume = 1f;
+
+    public bool isDoubleDoor = false; // Является ли дверь двустворчатой
+    public DoorController secondDoor; // Вторая створка (если есть)
 
     private Vector3 closedPosition;
-    private bool isOpen = false;
+    private bool isOpen = false; // Текущее состояние двери
     private bool isMoving = false;
     private Coroutine doorCoroutine;
     private AudioSource audioSource;
     private string originalTag;
+    
 
     private void Start()
     {
@@ -28,24 +34,53 @@ public class DoorController : MonoBehaviour, IUsable
     {
         if (isMoving) return;
 
+        // Если дверь двустворчатая, синхронизируем состояние со второй створкой
+        if (isDoubleDoor && secondDoor != null)
+        {
+            if (secondDoor.isMoving) return;
+
+            // Открываем или закрываем обе двери в зависимости от текущего состояния
+            bool targetState = !isOpen;
+            SetState(targetState);
+            secondDoor.SetState(targetState);
+        }
+        else
+        {
+            // Открываем/закрываем одиночную дверь
+            ToggleState();
+        }
+    }
+
+    private void SetState(bool open)
+    {
+        if (isOpen == open) return; // Уже в нужном состоянии
+
         if (doorCoroutine != null)
             StopCoroutine(doorCoroutine);
 
-        doorCoroutine = StartCoroutine(MoveDoor(isOpen ? closedPosition : openPosition.position, isOpen ? closeSound : openSound));
-        isOpen = !isOpen;
+        Vector3 targetPosition = open ? openPosition.position : closedPosition;
+        AudioClip sound = open ? openSound : closeSound;
+        float volume = open ? openVolume : closeVolume;
+
+        doorCoroutine = StartCoroutine(MoveDoor(targetPosition, sound, volume));
+        isOpen = open;
     }
 
-    private IEnumerator MoveDoor(Vector3 targetPosition, AudioClip sound)
+    private void ToggleState()
+    {
+        SetState(!isOpen);
+    }
+
+    private IEnumerator MoveDoor(Vector3 targetPosition, AudioClip sound, float volume)
     {
         isMoving = true;
-
         gameObject.tag = "Untagged";
 
         Vector3 startPos = transform.position;
         float elapsedTime = 0f;
 
         if (sound != null)
-            audioSource.PlayOneShot(sound);
+            audioSource.PlayOneShot(sound, volume);
 
         while (elapsedTime < openCloseTime)
         {
@@ -63,7 +98,6 @@ public class DoorController : MonoBehaviour, IUsable
 
         transform.position = targetPosition;
         isMoving = false;
-
         gameObject.tag = originalTag;
     }
 }
