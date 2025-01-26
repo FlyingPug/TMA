@@ -7,31 +7,19 @@ using TMPro;
 public class SubtitleManager : MonoBehaviour
 {
     public string defaultLanguage = "en";
-    private Dictionary<int, string> subtitles = new Dictionary<int, string>();
+    private Dictionary<int, SubtitleEntry> subtitles = new Dictionary<int, SubtitleEntry>();
 
     public TMP_Text subtitleText;
     public CanvasGroup panelCanvasGroup;
     public float defaultDisplayTime = 2f;
     public float fadeDuration = 0.5f;
 
-    private float timer = 0f;
-    private bool isFading = false;
+    private Queue<SubtitleData> subtitleQueue = new Queue<SubtitleData>();
+    private bool isDisplaying = false;
 
     void Start()
     {
-        LoadLanguage("en");
-    }
-
-    private void Update()
-    {
-        if (timer > 0)
-        {
-            timer -= Time.deltaTime;
-            if (timer <= 0 && !isFading)
-            {
-                StartCoroutine(FadeOut());
-            }
-        }
+        LoadLanguage(defaultLanguage);
     }
 
     public void LoadLanguage(string languageCode)
@@ -39,8 +27,6 @@ public class SubtitleManager : MonoBehaviour
         subtitles.Clear();
 
         string filePath = Path.Combine(Application.dataPath, "Translations", $"subtitles_{languageCode}.xml");
-        Debug.Log($"Attempting to load file: {filePath}");
-
         if (!File.Exists(filePath))
         {
             Debug.LogError($"XML file for language {languageCode} not found. Loading default language.");
@@ -59,7 +45,11 @@ public class SubtitleManager : MonoBehaviour
                 {
                     int id = int.Parse(line.Attributes["id"].Value);
                     string text = line.Attributes["text"].Value;
-                    subtitles[id] = text;
+                    float displayTime = line.Attributes["displayTime"] != null
+                        ? float.Parse(line.Attributes["displayTime"].Value)
+                        : defaultDisplayTime;
+
+                    subtitles[id] = new SubtitleEntry { Text = text, DisplayTime = displayTime };
                 }
 
                 Debug.Log("Subtitles loaded successfully.");
@@ -69,63 +59,61 @@ public class SubtitleManager : MonoBehaviour
                 Debug.LogError($"Error parsing XML file: {e.Message}");
             }
         }
-        else
-        {
-            Debug.LogError("Failed to load the XML file.");
-        }
     }
 
-    public string GetSubtitle(int id)
+    public SubtitleEntry GetSubtitle(int id)
     {
-        return subtitles.ContainsKey(id) ? subtitles[id] : $"[Failed to find subtitle #{id}]";
+        return subtitles.ContainsKey(id) ? subtitles[id] : new SubtitleEntry { Text = $"[Subtitle #{id} not found]", DisplayTime = defaultDisplayTime };
     }
 
-    public void ShowSubtitle(int id, bool fadeIn = true, bool fadeOut = true, float? customDisplayTime = null)
+    public void EnqueueSubtitle(int id, bool fadeIn = true, bool fadeOut = true)
     {
-        string subtitle = GetSubtitle(id);
-        subtitleText.text = subtitle;
-
-        if (fadeIn)
-        {
-            StartCoroutine(FadeIn());
-        }
-        else
-        {
-            panelCanvasGroup.alpha = 1;
-        }
-
-        timer = customDisplayTime ?? defaultDisplayTime;
-
-        if (!fadeOut)
-        {
-            StopCoroutine(FadeOut());
-        }
+        SubtitleEntry subtitle = GetSubtitle(id);
+        EnqueueSubtitleText(subtitle.Text, fadeIn, fadeOut, subtitle.DisplayTime);
     }
 
-    public void ShowSubtitleText(string text, bool fadeIn = true, bool fadeOut = true, float? customDisplayTime = null)
+    public void EnqueueSubtitleText(string text, bool fadeIn = true, bool fadeOut = true, float displayTime = 0)
+    {
+        subtitleQueue.Enqueue(new SubtitleData { Text = text, FadeIn = fadeIn, FadeOut = fadeOut, DisplayTime = displayTime });
+        if (!isDisplaying)
+            StartCoroutine(ProcessQueue());
+    }
+
+    private System.Collections.IEnumerator ProcessQueue()
+    {
+        isDisplaying = true;
+
+        while (subtitleQueue.Count > 0)
+        {
+            SubtitleData currentSubtitle = subtitleQueue.Dequeue();
+            yield return ShowSubtitleInternal(currentSubtitle.Text, currentSubtitle.FadeIn, currentSubtitle.FadeOut, currentSubtitle.DisplayTime);
+        }
+
+        isDisplaying = false;
+    }
+
+    private System.Collections.IEnumerator ShowSubtitleInternal(string text, bool fadeIn, bool fadeOut, float displayTime)
     {
         subtitleText.text = text;
 
         if (fadeIn)
-        {
-            StartCoroutine(FadeIn());
-        }
+            yield return StartCoroutine(FadeIn());
+        else
+            panelCanvasGroup.alpha = 1;
+
+        yield return new WaitForSeconds(displayTime);
+
+        if (fadeOut)
+            yield return StartCoroutine(FadeOut());
         else
         {
-            panelCanvasGroup.alpha = 1;
-        }
-
-        timer = customDisplayTime ?? defaultDisplayTime;
-
-        if (!fadeOut)
-        {
-            StopCoroutine(FadeOut());
+            panelCanvasGroup.alpha = 0;
+            subtitleText.text = "";
         }
     }
 
     private System.Collections.IEnumerator FadeIn()
     {
-        isFading = true;
         panelCanvasGroup.alpha = 0;
         float elapsed = 0f;
 
@@ -137,12 +125,10 @@ public class SubtitleManager : MonoBehaviour
         }
 
         panelCanvasGroup.alpha = 1;
-        isFading = false;
     }
 
     private System.Collections.IEnumerator FadeOut()
     {
-        isFading = true;
         float elapsed = 0f;
 
         while (elapsed < fadeDuration)
@@ -154,6 +140,19 @@ public class SubtitleManager : MonoBehaviour
 
         panelCanvasGroup.alpha = 0;
         subtitleText.text = "";
-        isFading = false;
+    }
+
+    public class SubtitleEntry
+    {
+        public string Text;
+        public float DisplayTime;
+    }
+
+    private class SubtitleData
+    {
+        public string Text;
+        public bool FadeIn;
+        public bool FadeOut;
+        public float DisplayTime;
     }
 }

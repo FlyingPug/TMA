@@ -54,6 +54,7 @@ public class WeatherController : MonoBehaviour
         {
             yield return StartCoroutine(FadeOutSound());
         }
+        
         audioSource.clip = newClip;
         audioSource.Play();
         yield return StartCoroutine(FadeInSound(maxVolume));
