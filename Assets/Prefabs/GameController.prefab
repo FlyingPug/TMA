@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 5951844349470528704}
   - component: {fileID: 6432207513168625503}
   - component: {fileID: 8329054275424602461}
-  - component: {fileID: 4499151262297394154}
   - component: {fileID: 997977539953904783}
+  - component: {fileID: 4900023394006177994}
+  - component: {fileID: 5168447473693897279}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -149,20 +150,6 @@ MonoBehaviour:
   panelCanvasGroup: {fileID: 0}
   defaultDisplayTime: 2
   fadeDuration: 0.5
---- !u!114 &4499151262297394154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5420184551862036303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa34fe070f026074db902237291a6503, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 0}
-  fadeDuration: 2
 --- !u!114 &997977539953904783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,3 +166,34 @@ MonoBehaviour:
   snowfallPrefab: {fileID: 0}
   indoorsClip: {fileID: 8300000, guid: 6fd4de3200efa9240820f770ff217e8e, type: 3}
   outdoorsClip: {fileID: 8300000, guid: e7b3e5d1d97a288468d76185e741e389, type: 3}
+--- !u!114 &4900023394006177994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5420184551862036303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e32b8f7a655a1d44aac83b67ee52aa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeBalance: 0
+  fadeState: 1
+  fadeSpeed: 3
+  fromInDelay: 0
+  fromOutDelay: 0
+--- !u!114 &5168447473693897279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5420184551862036303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db982c3326010f24b965b469e8227b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subtitleManager: {fileID: 8329054275424602461}
+  currentQuestOutput: {fileID: 0}
