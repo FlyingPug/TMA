@@ -12,13 +12,15 @@ public class ZoneQuest : MonoBehaviour
     public List<int> subtitleIds;
 
     [Header("Zone Item Requirements")]
-    public int requiredItemsCount = 1;  // Количество предметов, которое должно быть в зоне
+    public int requiredItemsCount = 3;  // Количество предметов, которое должно быть в зоне
 
+    private bool isTriggered = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(comparedTag))
+        if (other.CompareTag(comparedTag) && !isTriggered)
         {
+            isTriggered = true;
             StartCoroutine(HandleZoneQuest());
         }
     }
@@ -58,7 +60,7 @@ public class ZoneQuest : MonoBehaviour
 
         foreach (var collider in colliders)
         {
-            if (collider.CompareTag(comparedTag))
+            if (collider.CompareTag("Item"))
             {
                 itemCount++;
             }
