@@ -12,60 +12,74 @@ public class ZoneQuest : MonoBehaviour
     public List<int> subtitleIds;
 
     [Header("Zone Item Requirements")]
-    public int requiredItemsCount = 3;  // Количество предметов, которое должно быть в зоне
+    public int requiredItemsCount = 1;  // Требуемое количество предметов в зоне
 
-    private bool isTriggered = false;
+    private HashSet<GameObject> itemsInZone = new HashSet<GameObject>();  // Предметы в зоне
+
+    private void Start()
+    {
+        // Подписка на событие смены квеста в questManager
+        questManager.OnQuestAdded += OnQuestAdded;
+    }
+
+    private void OnDestroy()
+    {
+        // Отписка от события, если объект уничтожен
+        questManager.OnQuestAdded -= OnQuestAdded;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(comparedTag) && !isTriggered)
+        // Добавляем предмет в зону только если это предмет с нужным тегом
+        if (other.CompareTag(comparedTag))
         {
-            isTriggered = true;
-            StartCoroutine(HandleZoneQuest());
+            itemsInZone.Add(other.gameObject);
+            StartCoroutine(HandleQuestStart());
         }
     }
 
-    private IEnumerator HandleZoneQuest()
+    private void OnTriggerExit(Collider other)
     {
-        Quest completedQuest = questManager.currentQuests.Find(quest => quest.id == completedQuestId);
-
-        if (completedQuest == null || completedQuest.isCompleted)
-            yield break;
-
-        // Проверка, что в зоне есть нужное количество предметов
-        int currentItemsCount = CountItemsInZone();
-        if (currentItemsCount < requiredItemsCount)
+        // Убираем предмет из списка при выходе из зоны
+        if (other.CompareTag(comparedTag))
         {
-            Debug.Log($"Not enough items in the zone. Required: {requiredItemsCount}, Found: {currentItemsCount}");
-            yield break; // Прерываем выполнение квеста, если недостаточно предметов
+            itemsInZone.Remove(other.gameObject);
         }
-
-        // Показываем субтитры
-        foreach (int subtitleId in subtitleIds)
-        {
-            questManager.subtitleManager.EnqueueSubtitle(subtitleId);
-            yield return new WaitForSeconds(0.0f); // Можно заменить на ожидание окончания субтитров, если необходимо
-        }
-
-        // Завершаем текущий квест и добавляем следующий
-        questManager.CompleteQuest(completedQuestId);
-        questManager.AddQuest(nextQuestId);
     }
 
-    // Метод для подсчета количества предметов в зоне (простейший пример)
-    private int CountItemsInZone()
+    // Метод для подписки на событие смены квеста
+    private void OnQuestAdded(int questId)
     {
-        int itemCount = 0;
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 10f); // Радиус проверки 10 единиц
-
-        foreach (var collider in colliders)
+        // Когда квест добавлен, проверяем, нужно ли запускать квест для этой зоны
+        if (questId == completedQuestId)
         {
-            if (collider.CompareTag("Item"))
+            StartCoroutine(HandleQuestStart());
+        }
+    }
+
+    private IEnumerator HandleQuestStart()
+    {
+        // Ожидаем завершения субтитров, если они в процессе
+        yield return new WaitUntil(() => questManager.subtitleManager.QueueLength == 0);
+
+        // Проверка условий начала квеста
+        if (itemsInZone.Count >= requiredItemsCount)
+        {
+            Quest completedQuest = questManager.currentQuests.Find(q => q.id == completedQuestId);
+
+            if (completedQuest != null && !completedQuest.isCompleted)
             {
-                itemCount++;
+                // Показываем субтитры
+                foreach (int subtitleId in subtitleIds)
+                {
+                    questManager.subtitleManager.EnqueueSubtitle(subtitleId);
+                    yield return null; // Ждем завершения субтитров (если нужно, можно использовать WaitForSeconds)
+                }
+
+                // Завершаем текущий квест и начинаем следующий
+                questManager.CompleteQuest(completedQuestId);
+                questManager.AddQuest(nextQuestId);
             }
         }
-
-        return itemCount;
     }
 }

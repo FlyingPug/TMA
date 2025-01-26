@@ -43,7 +43,7 @@ public class CutsceneController : MonoBehaviour
             Debug.LogError("Cutscene music is not assigned.");
         }
 
-        StartCutscene();
+        //StartCutscene();
     }
 
     public void StartCutscene()
