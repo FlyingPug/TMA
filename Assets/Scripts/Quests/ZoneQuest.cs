@@ -7,14 +7,15 @@ public class ZoneQuest : MonoBehaviour
     [Header("Quest Settings")]
     public QuestManager questManager;
     public int completedQuestId;
-    public int nextQuestId;    
+    public int nextQuestId;
+    public string comparedTag = "Player";
     public List<int> subtitleIds; 
 
     private bool isTriggered = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isTriggered)
+        if (other.CompareTag(comparedTag) && !isTriggered)
         {
             isTriggered = true;
             StartCoroutine(HandleZoneQuest());
@@ -23,10 +24,15 @@ public class ZoneQuest : MonoBehaviour
 
     private IEnumerator HandleZoneQuest()
     {
+        Quest completedQuest = questManager.currentQuests.Find(quest => quest.id == completedQuestId);
+
+        if (completedQuest == null || completedQuest.isCompleted)
+            yield break;
+
         foreach (int subtitleId in subtitleIds)
         {
-            questManager.subtitleManager.ShowSubtitleText(questManager.allQuests[subtitleId].subtitleText);
-            yield return new WaitForSeconds(2.0f);
+            questManager.subtitleManager.EnqueueSubtitle(subtitleId);
+            yield return new WaitForSeconds(0.0f);
         }
 
         questManager.CompleteQuest(completedQuestId);

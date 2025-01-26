@@ -82,6 +82,12 @@ public class QuestManager : MonoBehaviour
 
     public void AddQuest(int id)
     {
+        Debug.Log($"trying to add quest {id}");
+        Quest completedQuest = currentQuests.Find(quest => quest.id == id);
+
+        if (completedQuest == null || completedQuest.isCompleted)
+            return;
+        Debug.Log($"Added quest {id}");
         StartCoroutine(AddQuestWithDelay(id));
     }
 
@@ -89,10 +95,11 @@ public class QuestManager : MonoBehaviour
     {
         if (allQuests.TryGetValue(id, out Quest quest))
         {
-            subtitleManager.ShowSubtitleText(quest.subtitleText);
+            if (quest.subtitleText.Length > 0) 
+                subtitleManager.EnqueueSubtitleText(quest.subtitleText);
 
             // ∆дЄм завершени€ отображени€ субтитров (например, 2 секунды)
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(0.0f);
 
             currentQuests.Add(quest);
             UpdateUi();
@@ -109,7 +116,7 @@ public class QuestManager : MonoBehaviour
         if (quest != null && !quest.isCompleted)
         {
             quest.CompleteQuest();
-            subtitleManager.ShowSubtitleText(quest.subtitleText);
+            subtitleManager.EnqueueSubtitleText(quest.subtitleText);
             Debug.Log($"Quest {quest.name} completed");
         }
     }

@@ -3,6 +3,8 @@ using System.IO;
 using System.Xml;
 using UnityEngine;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
+using System.Globalization;
 
 public class SubtitleManager : MonoBehaviour
 {
@@ -38,28 +40,41 @@ public class SubtitleManager : MonoBehaviour
             try
             {
                 XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(filePath);
+                xmlDocument.Load(filePath);  // Загружаем XML-файл
 
                 XmlNodeList lines = xmlDocument.GetElementsByTagName("Line");
+
+                Debug.Log($"Found {lines.Count} subtitle lines.");
+
                 foreach (XmlNode line in lines)
                 {
                     int id = int.Parse(line.Attributes["id"].Value);
                     string text = line.Attributes["text"].Value;
-                    float displayTime = line.Attributes["displayTime"] != null
-                        ? float.Parse(line.Attributes["displayTime"].Value)
-                        : defaultDisplayTime;
+
+                    float displayTime = defaultDisplayTime;
+                    if (line.Attributes["displayTime"] != null)
+                    {
+                        float.TryParse(line.Attributes["displayTime"].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out displayTime);
+                    }
 
                     subtitles[id] = new SubtitleEntry { Text = text, DisplayTime = displayTime };
+
+                    Debug.Log($"Loaded subtitle [{id}]: \"{text}\" ({displayTime} sec)");
                 }
 
-                Debug.Log("Subtitles loaded successfully.");
+                Debug.Log($"Subtitles loaded successfully. Loaded {subtitles.Count} subtitles.");
             }
             catch (XmlException e)
             {
                 Debug.LogError($"Error parsing XML file: {e.Message}");
             }
         }
+        else
+        {
+            Debug.LogError("Subtitle file not found after default language fallback.");
+        }
     }
+
 
     public SubtitleEntry GetSubtitle(int id)
     {
