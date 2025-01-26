@@ -15,6 +15,12 @@ public class PlayerInteractor : MonoBehaviour
         inputActions.Enable();
     }
 
+    private void OnDestroy()
+    {
+        var inputActions = new @InputSystem_Actions();
+        inputActions.Player.Interact.started -= ctx => TryInteract();
+    }
+
     private void Update()
     {
         CheckForInteractable();

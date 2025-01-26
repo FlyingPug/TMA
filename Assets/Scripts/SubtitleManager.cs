@@ -20,7 +20,6 @@ public class SubtitleManager : MonoBehaviour
     void Start()
     {
         LoadLanguage("en");
-        ShowSubtitle(1, true, true);
     }
 
     private void Update()
@@ -103,9 +102,25 @@ public class SubtitleManager : MonoBehaviour
         }
     }
 
-    public void ShowSubtitleText(string subtitleText)
+    public void ShowSubtitleText(string text, bool fadeIn = true, bool fadeOut = true, float? customDisplayTime = null)
     {
-        
+        subtitleText.text = text;
+
+        if (fadeIn)
+        {
+            StartCoroutine(FadeIn());
+        }
+        else
+        {
+            panelCanvasGroup.alpha = 1;
+        }
+
+        timer = customDisplayTime ?? defaultDisplayTime;
+
+        if (!fadeOut)
+        {
+            StopCoroutine(FadeOut());
+        }
     }
 
     private System.Collections.IEnumerator FadeIn()
