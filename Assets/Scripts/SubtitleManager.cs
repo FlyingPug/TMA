@@ -3,7 +3,6 @@ using System.IO;
 using System.Xml;
 using UnityEngine;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using System.Globalization;
 
 public class SubtitleManager : MonoBehaviour

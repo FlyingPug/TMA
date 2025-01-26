@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class CutsceneController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class CutsceneController : MonoBehaviour
     public float musicFadeDuration = 2f;
 
     public AudioSource cutsceneMusicSource;
+    public TextMeshProUGUI endText;
     private bool isCutsceneActive = false;
 
     private void Start()
@@ -43,12 +45,16 @@ public class CutsceneController : MonoBehaviour
             Debug.LogError("Cutscene music is not assigned.");
         }
 
+        if (endText == null)
+        {
+            Debug.LogError("EndText object is not assigned.");
+        }
+
         //StartCutscene();
     }
 
     public void StartCutscene()
     {
-        
         if (cameraStartPoint != null)
         {
             Camera.main.transform.position = cameraStartPoint.position;
@@ -116,6 +122,12 @@ public class CutsceneController : MonoBehaviour
 
             fogController.fogDensity = 0f;
         }
+
+        if (endText != null)
+        {
+            endText.text = "This is the end, thank you for playing!";
+        }
+
         isCutsceneActive = false;
     }
 
@@ -128,6 +140,6 @@ public class CutsceneController : MonoBehaviour
             cutsceneMusicSource.volume = Mathf.Lerp(0f, 1f, elapsedTime / musicFadeDuration);
             yield return null;
         }
-        cutsceneMusicSource.volume = 0.5f;
+        cutsceneMusicSource.volume = 1f;
     }
 }
