@@ -16,7 +16,7 @@ public class DaySwitcher : MonoBehaviour
 
     public SubtitleManager titleManager;
     public Transform wakeUpPosition;
-    public FadeEffect playerFadeEffect;
+    //public FadeEffect playerFadeEffect;
 
     private List<DayScenario> dayScenarioList;
 

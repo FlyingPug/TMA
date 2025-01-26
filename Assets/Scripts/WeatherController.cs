@@ -3,18 +3,24 @@ using UnityEngine;
 
 public class WeatherController : MonoBehaviour
 {
-    [SerializeField] private bool isIndoors;
+    public bool isIndoors;
     public GameObject snowfallPrefab;
     public AudioClip indoorsClip;
     public AudioClip outdoorsClip;
+    private Fader fader; 
+    public PlayerMovement playerController;
 
     private AudioSource audioSource;
     private Renderer snowfallRenderer;
     private Fog fogComponent;
     private bool currentState;
 
+    public float fadeDuration = 5f;
+
     private void Start()
-    {
+    {   
+        fader = GetComponent<Fader>();
+
         audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
         audioSource.loop = true;
         audioSource.volume = 0f;
@@ -29,7 +35,7 @@ public class WeatherController : MonoBehaviour
         UpdateEnvironment(isIndoors);
     }
 
-    private void OnValidate()
+    public void OnValidate()
     {
         if (Application.isPlaying && currentState != isIndoors)
         {
@@ -40,6 +46,17 @@ public class WeatherController : MonoBehaviour
     private void UpdateEnvironment(bool indoors)
     {
         StopAllCoroutines();
+        StartCoroutine(HandleWeatherTransition(indoors));
+    }
+
+    private IEnumerator HandleWeatherTransition(bool indoors)
+    {
+        playerController.enabled = false;
+
+        fader.fadeState = Fader.FadeState.Out;
+        fader.fadeSpeed = 1f / fadeDuration;
+        yield return new WaitUntil(() => fader.fadeState == Fader.FadeState.OutEnd);
+
         currentState = indoors;
 
         if (indoors)
@@ -54,6 +71,15 @@ public class WeatherController : MonoBehaviour
             ToggleSnowfall(true);
             ToggleFog(true);
         }
+
+        fader.fadeState = Fader.FadeState.In;
+        fader.fadeSpeed = 1f / fadeDuration;
+        yield return new WaitUntil(() => fader.fadeState == Fader.FadeState.InEnd);
+
+        fader.fadeState = Fader.FadeState.Out;
+        yield return new WaitUntil(() => fader.fadeState == Fader.FadeState.OutEnd);
+
+        playerController.enabled = true;
     }
 
     private IEnumerator SwitchSound(AudioClip newClip, float maxVolume)
@@ -72,13 +98,12 @@ public class WeatherController : MonoBehaviour
 
     private IEnumerator FadeInSound(float maxVolume)
     {
-        float duration = 2f;
         float elapsed = 0f;
 
-        while (elapsed < duration)
+        while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(0f, maxVolume, elapsed / duration);
+            audioSource.volume = Mathf.Lerp(0f, maxVolume, elapsed / fadeDuration);
             yield return null;
         }
 
@@ -87,13 +112,12 @@ public class WeatherController : MonoBehaviour
 
     private IEnumerator FadeOutSound()
     {
-        float duration = 2f;
         float elapsed = 0f;
 
-        while (elapsed < duration)
+        while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(audioSource.volume, 0f, elapsed / duration);
+            audioSource.volume = Mathf.Lerp(audioSource.volume, 0f, elapsed / fadeDuration);
             yield return null;
         }
 
