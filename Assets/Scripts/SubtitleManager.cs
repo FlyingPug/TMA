@@ -17,7 +17,10 @@ public class SubtitleManager : MonoBehaviour
     public float fadeDuration = 0.5f;
 
     private Queue<SubtitleData> subtitleQueue = new Queue<SubtitleData>();
-    private bool isDisplaying = false;
+    bool isDisplaying = false;
+
+    public bool Displaying { get { return isDisplaying; } }
+    public int QueueLength { get { return subtitleQueue.Count; } }
 
     void Start()
     {
@@ -44,8 +47,6 @@ public class SubtitleManager : MonoBehaviour
 
                 XmlNodeList lines = xmlDocument.GetElementsByTagName("Line");
 
-                Debug.Log($"Found {lines.Count} subtitle lines.");
-
                 foreach (XmlNode line in lines)
                 {
                     int id = int.Parse(line.Attributes["id"].Value);
@@ -58,8 +59,6 @@ public class SubtitleManager : MonoBehaviour
                     }
 
                     subtitles[id] = new SubtitleEntry { Text = text, DisplayTime = displayTime };
-
-                    Debug.Log($"Loaded subtitle [{id}]: \"{text}\" ({displayTime} sec)");
                 }
 
                 Debug.Log($"Subtitles loaded successfully. Loaded {subtitles.Count} subtitles.");

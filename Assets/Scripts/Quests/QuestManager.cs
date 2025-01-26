@@ -46,7 +46,7 @@ public class QuestManager : MonoBehaviour
 
     private void LoadQuests()
     {
-        string filePath = Path.Combine(Application.dataPath, "quests.xml");
+        string filePath = Path.Combine(Application.dataPath, "Translations", "quests.xml");
         Debug.Log($"Attempting to load file: {filePath}");
 
         if (File.Exists(filePath))
@@ -85,7 +85,7 @@ public class QuestManager : MonoBehaviour
         Debug.Log($"trying to add quest {id}");
         Quest completedQuest = currentQuests.Find(quest => quest.id == id);
 
-        if (completedQuest == null || completedQuest.isCompleted)
+        if (completedQuest != null && completedQuest.isCompleted)
             return;
         Debug.Log($"Added quest {id}");
         StartCoroutine(AddQuestWithDelay(id));
@@ -95,12 +95,12 @@ public class QuestManager : MonoBehaviour
     {
         if (allQuests.TryGetValue(id, out Quest quest))
         {
-            if (quest.subtitleText.Length > 0) 
+            if (quest.subtitleText.Length > 0)
+            {
                 subtitleManager.EnqueueSubtitleText(quest.subtitleText);
-
-            // Ждём завершения отображения субтитров (например, 2 секунды)
-            yield return new WaitForSeconds(0.0f);
-
+            }
+            yield return new WaitUntil(() => subtitleManager.QueueLength == 0);
+            // Добавляем квест в список
             currentQuests.Add(quest);
             UpdateUi();
         }
@@ -136,6 +136,6 @@ public class QuestManager : MonoBehaviour
             task.AppendLine(quest.description);
         }
 
-        currentQuestOutput.ShowText(task.ToString(), 0.3f);
+        currentQuestOutput.ShowText(task.ToString(), 0.05f);
     }
 }
