@@ -43,7 +43,7 @@ public class SubtitleManager : MonoBehaviour
             try
             {
                 XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(filePath);  // Загружаем XML-файл
+                xmlDocument.Load(filePath);
 
                 XmlNodeList lines = xmlDocument.GetElementsByTagName("Line");
 
