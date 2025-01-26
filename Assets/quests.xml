@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+    <Quest id="1" name="Day 1. Begining" description="Clear" subtitleText=""/>
+    <Quest id="2" name="Day 2. Awakening" description="Blizzard" subtitleText=""/>
+    <Quest id="3" name="Day 3. Denial" description="Snowy" subtitleText=""/>
+    <Quest id="4" name="Day 4. Anger" description="Snowy" subtitleText=""/>
+    <Quest id="5" name="Day 5. Bargaining" description="Clear" subtitleText=""/>
+    <Quest id="6" name="Day 6. Depression" description="Blizzard" subtitleText=""/>
+    <Quest id="7" name="Day 7. Acceptance" description="Clear" subtitleText=""/>
+</Quests>
