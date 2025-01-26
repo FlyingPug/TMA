@@ -46,7 +46,7 @@ public class ObjectPickupAction : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, pickupRange))
         {
-            if (hit.collider.CompareTag("Pickup"))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Pickup"))            
             {
                 heldObject = hit.collider.gameObject;
                 heldObjectRb = heldObject.GetComponent<Rigidbody>();
