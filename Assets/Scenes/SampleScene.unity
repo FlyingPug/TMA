@@ -428,8 +428,12 @@ PrefabInstance:
       value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6745679812650475954, guid: 709989d76f9ec4243aef52c695d62cf3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.379
+      objectReference: {fileID: 0}
+    - target: {fileID: 6745679812650475954, guid: 709989d76f9ec4243aef52c695d62cf3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.257
+      value: 1.64
       objectReference: {fileID: 0}
     - target: {fileID: 9137816203776527346, guid: 709989d76f9ec4243aef52c695d62cf3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -501,6 +505,7 @@ MonoBehaviour:
   nextQuestId: 4
   comparedTag: Snowman
   subtitleIds: 0f00000010000000
+  requiredItemsCount: 1
 --- !u!65 &224930026
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1013,6 +1018,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db982c3326010f24b965b469e8227b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &400159240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400159227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 777e458ec74b8a0428e434450a8aa544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questManager: {fileID: 400159234}
+  nextQuestId: 1
+  subtitleIds: 0100000002000000030000000400000005000000
+  startDelay: 3
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1593,8 +1614,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.23864678, y: 0.27148932, z: 0.46344173}
-  m_Center: {x: 0.08792286, y: 0.0005241507, z: 0.006478222}
+  m_Size: {x: 0.16160804, y: 0.17795774, z: 0.44440025}
+  m_Center: {x: 0.08546956, y: -0.004424596, z: 0.015998973}
 --- !u!1 &542332388
 GameObject:
   m_ObjectHideFlags: 0
@@ -2757,6 +2778,7 @@ MonoBehaviour:
   nextQuestId: 3
   comparedTag: ChristmasTree
   subtitleIds: 0c0000000d0000000e000000
+  requiredItemsCount: 1
 --- !u!65 &828637657
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2828,6 +2850,7 @@ MonoBehaviour:
   nextQuestId: 2
   comparedTag: Player
   subtitleIds: 060000000700000008000000090000000a000000
+  requiredItemsCount: 1
 --- !u!65 &910687200
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5059,6 +5082,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5420184551862036303, guid: a38bfdde2e08a8e49ba42399807f0013, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 400159240}
+    - targetCorrespondingSourceObject: {fileID: 5420184551862036303, guid: a38bfdde2e08a8e49ba42399807f0013, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 400159233}
   m_SourcePrefab: {fileID: 100100000, guid: a38bfdde2e08a8e49ba42399807f0013, type: 3}
 --- !u!1 &1782078619
@@ -5111,6 +5137,7 @@ MonoBehaviour:
   nextQuestId: 5
   comparedTag: Player
   subtitleIds: 11000000120000001300000014000000150000001600000017000000
+  requiredItemsCount: 1
 --- !u!65 &1782078622
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5241,6 +5268,10 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 112
       objectReference: {fileID: 0}
+    - target: {fileID: 3368612327539468410, guid: 0cedac6625f9051418cb51f16daf03d0, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e0167dee21fdd3f4c9d2bac28657b625, type: 2}
     - target: {fileID: 4959189470751740504, guid: 0cedac6625f9051418cb51f16daf03d0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.62134
@@ -5527,6 +5558,7 @@ MonoBehaviour:
   nextQuestId: 6
   comparedTag: ChristmasTree
   subtitleIds: 18000000190000001a0000001b000000
+  requiredItemsCount: 1
 --- !u!65 &2005138056
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8185,7 +8217,7 @@ Transform:
   m_GameObject: {fileID: 1553805746934233417}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0.023107741, z: -7.91612}
+  m_LocalPosition: {x: -0, y: 0.33, z: -7.91612}
   m_LocalScale: {x: 1600.5587, y: 1600.5587, z: 1600.5587}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Quests>
+    <Quest id="0" name="" description="Wait..." subtitleText=""/>
     <Quest id="1" name="Quest 1 - Warehouse" description="I should check the warehouse, I guess" subtitleText=""/>
     <Quest id="2" name="Quest 2 - Decorate the exterior" description="Place this damn tree in the middle of the ship" subtitleText=""/>
     <Quest id="3" name="Quest 3 - " description="Why not decorate the exterior as well?" subtitleText=""/>
