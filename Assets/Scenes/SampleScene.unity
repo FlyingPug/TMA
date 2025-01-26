@@ -366,8 +366,8 @@ Transform:
   m_GameObject: {fileID: 245908493}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -34.233078, y: 16.68, z: 22.26}
-  m_LocalScale: {x: 2505.312, y: 1213.6812, z: 1966.1205}
+  m_LocalPosition: {x: -29.07, y: 16.68, z: 20.36}
+  m_LocalScale: {x: 2505.312, y: 1066.9349, z: 1966.1205}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2496339196366785060}
@@ -4823,7 +4823,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6295219276578638544, guid: 6e2f93a10c74ad146a6d557d1455353a, type: 3}
+  - {fileID: 2100000, guid: 62a4606dd4e95264abd795d8a0a28875, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5214,7 +5214,7 @@ GameObject:
   - component: {fileID: 8202523134768503598}
   m_Layer: 0
   m_Name: stepstairs
-  m_TagString: Untagged
+  m_TagString: Metal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5287,13 +5287,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535062790697647114}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -34.233078, y: 17.166756, z: 0}
-  m_LocalScale: {x: 6119.4727, y: 2047.4395, z: 1966.1205}
+  m_LocalRotation: {x: 0.000000037009084, y: 0.7071068, z: -0.7071068, w: 0.000000029802319}
+  m_LocalPosition: {x: -42.804504, y: 17.166756, z: -1.6}
+  m_LocalScale: {x: 6119.4727, y: 2357.8484, z: 1966.1205}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2496339196366785060}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: -180}
 --- !u!1 &1490080863219518908
 GameObject:
   m_ObjectHideFlags: 0
@@ -7029,7 +7029,7 @@ GameObject:
   - component: {fileID: 2306884315591574199}
   m_Layer: 0
   m_Name: floor
-  m_TagString: Untagged
+  m_TagString: Metal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
