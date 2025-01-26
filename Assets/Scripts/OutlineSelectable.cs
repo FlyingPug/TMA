@@ -7,6 +7,8 @@ public class OutlineSelection : MonoBehaviour
     private RaycastHit raycastHit;
 
     public float rayDistance = 10f;
+    public Color outlineColor = Color.yellow;
+    public float outlineWidth = 9.0f;
 
     void Update()
     {
@@ -47,8 +49,8 @@ public class OutlineSelection : MonoBehaviour
         if (outline == null)
         {
             outline = target.gameObject.AddComponent<Outline>();
-            outline.OutlineColor = Color.yellow;
-            outline.OutlineWidth = 9.0f;
+            outline.OutlineColor = outlineColor;
+            outline.OutlineWidth = outlineWidth;
         }
         outline.enabled = true;
     }
