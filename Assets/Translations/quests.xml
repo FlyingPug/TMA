@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Quests>
+    <Quest id="1" name="Quest 1 - Warehouse" description="I should check the warehouse, I guess" subtitleText="I need to check the Power"/>
+    <Quest id="2" name="Quest 2 - Decorate the exterior" description="Place this damn tree in the middle of the ship" subtitleText=""/>
+    <Quest id="3" name="Quest 3 - " description="Why not decorate the exterior as well?" subtitleText=""/>
+    <Quest id="4" name="Quest 4 - Check the power" description="Check the power in the cockpit" subtitleText=""/>
+    <Quest id="5" name="Quest 5 - Get the tree outside" description="Take the tree for a little walk" subtitleText=""/>
+    <Quest id="6" name="Quest 5 - Life. What a joke" description="Ramble" subtitleText=""/>
+    <Quest id="7" name="Quest 7 - Tod" description="There's nothing else you can do, so you should just give up, if you haven't already" subtitleText=""/>
+</Quests>
